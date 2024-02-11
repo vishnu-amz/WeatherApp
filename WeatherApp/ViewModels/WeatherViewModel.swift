@@ -51,9 +51,7 @@ class WeatherViewModel: ObservableObject {
         customButtonModel = CustomButtonModel(
             buttonTitle: "Change date time",
             width: geometricWidth.size.width / 1.3,
-            buttonClicked: {
-                print("My name is vishnu")
-            })
+            buttonClicked: {})
     }
     
     func configureCurrentDayWeather() {

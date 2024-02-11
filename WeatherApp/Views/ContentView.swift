@@ -10,7 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     // MARK: Properties
-    var backgroundGradientColors: [Color] = [.blue, .white]
+    @ObservedObject var viewModel = WeatherViewModel()
+    
+    private var backgroundGradientColors: [Color] = [.blue, .white]
     
     // MARK: - Body
     var body: some View {
@@ -23,14 +25,18 @@ struct ContentView: View {
                     
                     // MARK: Content
                     VStack(spacing: 20) {
-                        CurrentDayWeatherStatusView()
-                        WeeklyWeatherStatusView()
+                        CurrentDayWeatherStatusView(currentDayWeatherModel: viewModel.currentDayWeatherModel)
+                        WeeklyWeatherStatusView(weeklyWeatherModel: viewModel.weeklyWeatherStatusModel)
                     }
                     Spacer()
                     
                     // MARK: Footer
-                    CustomButtonView(gemometricWidth: geometry)
+                    CustomButtonView(customButtonModel: viewModel.customButtonModel)
                     Spacer()
+                }.onAppear {
+                        viewModel.configureCurrentDayWeather()
+                        viewModel.fetchWeeklyWheather()
+                        viewModel.configureCustomButton(geometricWidth: geometry)
                 }
             }
         }
