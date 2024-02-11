@@ -1,0 +1,3 @@
+- This is a SwiftUI Weather app.
+- Implemented Architecture MVVM.
+- Weekly Weather listing Screen implemented.
