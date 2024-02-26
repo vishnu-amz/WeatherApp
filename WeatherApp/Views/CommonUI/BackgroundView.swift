@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct GradientBackgroundView: View {
+struct BackgroundView: View {
     
+    // MARK: Properties
+    @Binding var backgroundColors: [Color]
+    
+    // MARK: - Body
     var body: some View {
-        LinearGradient(colors: backgroundGradientColors, startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(colors: backgroundColors, startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
     }
-}
-
-#Preview {
-    GradientBackgroundView()
 }

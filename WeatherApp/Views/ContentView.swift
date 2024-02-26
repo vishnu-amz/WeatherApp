@@ -10,37 +10,46 @@ import SwiftUI
 struct ContentView: View {
     
     // MARK: Properties
-    @ObservedObject var viewModel = WeatherViewModel()
+    @StateObject var viewModel = WeatherViewModel()
     
-    private var backgroundGradientColors: [Color] = [.blue, .white]
+    @State private var isNightMode = false
+    @State private var backgroundColors: [Color] = [.blue, .white]
+    @State private var foregroundColors: Color = .yellow
+    
+    private var screenSize = UIScreen.main.bounds
     
     // MARK: - Body
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // MARK: - Background
-                LinearGradient(colors: backgroundGradientColors, startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea()
-                VStack {
-                    
-                    // MARK: Content
-                    VStack(spacing: 20) {
-                        CurrentDayWeatherStatusView(currentDayWeatherModel: viewModel.currentDayWeatherModel)
-                        WeeklyWeatherStatusView(weeklyWeatherModel: viewModel.weeklyWeatherStatusModel)
-                    }
-                    Spacer()
-                    
-                    // MARK: Footer
-                    CustomButtonView(customButtonModel: viewModel.customButtonModel)
-                    Spacer()
-                }.onAppear {
-                        viewModel.configureCurrentDayWeather()
-                        viewModel.fetchWeeklyWheather()
-                        viewModel.configureCustomButton(geometricWidth: geometry)
+        ZStack {
+            
+            // MARK: - Background
+            BackgroundView(backgroundColors: $backgroundColors)
+            VStack {
+                
+                // MARK: Content
+                VStack(spacing: 20) {
+                    CurrentDayWeatherStatusView(currentDayWeatherModel: viewModel.currentDayWeatherModel, foregroundColors: $foregroundColors)
+                    WeeklyWeatherStatusView(weeklyWeatherModel: viewModel.weeklyWeatherStatusModel, foregroundColors: $foregroundColors)
                 }
+                Spacer()
+                
+                // MARK: Footer
+                CustomButtonView(customButtonModel: viewModel.customButtonModel)
+                Spacer()
+                
+            }.onAppear {
+                viewModel.configureCurrentDayWeather()
+                viewModel.fetchWeeklyWheather()
+                viewModel.configureCustomButton(width: screenSize.width / 1.3, buttonClicked: {
+                    isNightMode.toggle()
+                    backgroundColors = isNightMode ? [.black, .white] : [.blue, .white]
+                    foregroundColors = isNightMode ? .red : .yellow
+                })
             }
+            
         }
     }
+    
 }
 
 #Preview {

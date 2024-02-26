@@ -5,8 +5,7 @@
 //  Created by Vishnu - iOS on 10/02/24.
 //
 
-import SwiftUI
-import Combine
+import Foundation
 
 class WeatherViewModel: ObservableObject {
     
@@ -47,11 +46,10 @@ class WeatherViewModel: ObservableObject {
                                         temperature: Measurement(value: 30, unit: .celsius))]
     }
     
-    func configureCustomButton(geometricWidth: GeometryProxy) {
+    func configureCustomButton(width: CGFloat, buttonClicked: (() -> Void)?) {
         customButtonModel = CustomButtonModel(
             buttonTitle: "Change date time",
-            width: geometricWidth.size.width / 1.3,
-            buttonClicked: {})
+            width: width, buttonClicked: buttonClicked)
     }
     
     func configureCurrentDayWeather() {
